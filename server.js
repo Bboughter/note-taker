@@ -13,3 +13,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 
 app.use(express.static('public'));
+
+app.get('/api/notes', async (req, res) => {
+    try {
+        const notes = await readFileAsync('./db/db.json', 'utf8');
+        res.send(notes);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+      }
+    });
+    
+    app.listen(3000, () => {
+      console.log('Server listening on port 3000');
+    });
