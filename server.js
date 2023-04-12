@@ -39,4 +39,28 @@ app.post('/api/notes', (req, res) => {
     });
 });
 
+app.get('*',(req, res) => {
+    res.sendFile(path.join(__dirname, 'public/notes.html'));
+});
 
+app.delete('/spi/notes/:id', (req, res) => {
+    const noteId = parseInt(req.params.id);
+    const index = notes.findIndex(note => note.id === noteId);
+    if(index !== -1) {
+        notes.splice(index, 1);
+        fs.writeFile('./db/db.json', JSON.stringify(notes), 'utef8', err => {
+            if(err) {
+                console.error(err);
+                res.status(500).json({ error: 'Failed to delete note' });
+            } else {
+                res.sendStatus(204);
+            }
+        });
+    } else {
+        res.status(404).json({ error: 'Note not found' });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+});
