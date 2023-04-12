@@ -18,18 +18,25 @@ fs.readFile('./db/db.json', 'utf8', (err, data) => {
     notes = JSON.parse(data);
 });
 
+app.get('/api/notes', (req, res) => {
+    res.json(notes);
+});
 
-// app.get('/api/notes', async (req, res) => {
-//     try {
-//         const notes = await readFileAsync('./db/db.json', 'utf8');
-//         res.send(notes);
-//       } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Internal Server Error');
-//       }
-//     });
-    
-//     app.listen(3000, () => {
-//       console.log('Server listening on port 3000');
-//     });
+app.post('/api/notes', (req, res) => {
+    const newNote = {
+        id: notes.length + 1,
+        title: req.body.title,
+        text: req.body.text,
+    };
+    notes.push(newNote);
+    fs.writeFile('./db/db.json', JSON.stringify(notes), 'utf8', err => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to save note' });
+        } else {
+            res.json(newNote);
+        }
+    });
+});
+
 
