@@ -43,12 +43,12 @@ app.get('*',(req, res) => {
     res.sendFile(path.join(__dirname, 'public/notes.html'));
 });
 
-app.delete('/spi/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res) => {
     const noteId = parseInt(req.params.id);
     const index = notes.findIndex(note => note.id === noteId);
     if(index !== -1) {
         notes.splice(index, 1);
-        fs.writeFile('./db/db.json', JSON.stringify(notes), 'utef8', err => {
+        fs.writeFile('./db/db.json', JSON.stringify(notes), 'utf8', err => {
             if(err) {
                 console.error(err);
                 res.status(500).json({ error: 'Failed to delete note' });
