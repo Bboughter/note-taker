@@ -11,6 +11,7 @@ For this project, the front end of the application was provided and I was tasked
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
+- [Questions](#questions)
 
 ## Installation
 
